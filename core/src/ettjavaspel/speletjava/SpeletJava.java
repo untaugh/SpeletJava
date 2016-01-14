@@ -25,6 +25,7 @@ public class SpeletJava extends ApplicationAdapter {
 		board = new Board();
 		board.pieces[5][3].piececolor = Piece.PieceColor.GREEN;
 		board.pieces[2][7].piececolor = Piece.PieceColor.GREEN;
+		board.pieces[4][4].piececolor = Piece.PieceColor.GREEN;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1500, 1500);
 	}
@@ -41,11 +42,10 @@ public class SpeletJava extends ApplicationAdapter {
 		// Draw the board
 		for (int col=0; col < board.pieces.length; col++) {
 			for (int row=0; row < board.pieces[col].length; row++) {
-				batch.draw(img, row*150,col*150);
 				if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
-					batch.draw(textureIce, row*150,col*150);
+					batch.draw(textureIce, col*150, row*150);
 				} else {
-					batch.draw(textureGreen, row*150,col*150);
+					batch.draw(textureGreen, col*150, row*150);
 				}
 			}
 		}
