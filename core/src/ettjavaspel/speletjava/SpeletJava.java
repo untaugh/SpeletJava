@@ -2,12 +2,14 @@ package ettjavaspel.speletjava;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class SpeletJava extends ApplicationAdapter {
+public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
 	private OrthographicCamera camera;
 	Texture textureIce;
@@ -25,6 +27,8 @@ public class SpeletJava extends ApplicationAdapter {
 		board.pieces[2][7].piececolor = Piece.PieceColor.GREEN;
 		board.pieces[4][4].piececolor = Piece.PieceColor.GREEN;
 		camera = new OrthographicCamera();
+
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class SpeletJava extends ApplicationAdapter {
 
 		float pieceWidth = width/10;
 		float pieceHeight = height/10;
-		float pieceSize = Math.min(pieceWidth,pieceHeight);
+		float pieceSize = Math.min(pieceWidth, pieceHeight);
 
 		// Draw the board
 		for (int col=0; col < board.pieces.length; col++) {
@@ -58,4 +62,45 @@ public class SpeletJava extends ApplicationAdapter {
 
 		batch.end();
 	}
+
+	@Override public boolean mouseMoved (int screenX, int screenY) {
+		return false;
+	}
+
+	@Override public boolean scrolled (int amount) {
+		return false;
+	}
+
+	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+		return true;
+	}
+
+	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
+		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+		System.out.println("Click " + screenX + " " + screenY);
+		return true;
+	}
+
+	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
+		return true;
+	}
+
+	@Override public boolean keyTyped (char character) {
+		return false;
+	}
+
+	@Override public boolean keyDown (int keycode) {
+		return false;
+	}
+
+	@Override public boolean keyUp (int keycode) {
+		return false;
+	}
+
+	@Override public void resize (int width, int height) {
+		// viewport must be updated for it to work properly
+		//viewport.update(width, height, true);
+	}
+
 }
