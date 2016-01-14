@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class SpeletJava extends ApplicationAdapter {
 	SpriteBatch batch;
 	private OrthographicCamera camera;
-	Texture img;
 	Texture textureIce;
 	Texture textureGreen;
 	Board board;
@@ -18,7 +17,6 @@ public class SpeletJava extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("ice.png");
 		textureIce = new Texture("ice.png");
 		textureGreen = new Texture("green.png");
 
