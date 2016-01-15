@@ -82,6 +82,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		System.out.println("Click " + screenX + " " + screenY);
+
+		board.Move(5,5, Board.Direction.UP);
 		return true;
 	}
 
