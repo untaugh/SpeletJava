@@ -85,10 +85,12 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-		if (button != Input.Buttons.LEFT || pointer > 0) return false;
-        System.out.println("Pressed: " + screenX + " " + screenY);
+        Vector3 mouse = new Vector3(screenX, screenY, 0);
+        camera.unproject(mouse);
+        if (button != Input.Buttons.LEFT || pointer > 0) return false;
+        System.out.println("Pressed: " + (int)mouse.x + " " + (int)mouse.y);
         dragging = true;
-        position = this.getPiece(screenX, screenY);
+        position = this.getPiece((int)mouse.x, (int)mouse.y);
         dragStartX = position.col;
         dragStartY = position.row;
 		return true;
@@ -103,25 +105,21 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		System.out.println("Released: " + mouse.x + " " + mouse.y);
         dragging = false;
 
-		Position p = getPiece((int)mouse.x, (int)mouse.y);
-		if (p != null) {
-			board.Move(p.col, p.row, Board.Direction.UP);
-		}
-
 		return true;
 	}
 
 	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
+        Vector3 mouse = new Vector3(screenX, screenY, 0);
+        camera.unproject(mouse);
         if(!dragging) return false;
         //System.out.println("Dragging");
-
         if(!marked) {
-            position = getPiece(screenX, screenY);
+            position = getPiece((int)mouse.x, (int)mouse.y);
             Board.Direction dir;
             if(position.col != dragStartX || position.row != dragStartY) {
                 if(board.pieces[position.col][position.row].piececolor != board.pieces[dragStartX][dragStartY].piececolor) {
                     dir = whichDirection(board, position, dragStartX, dragStartY);
-                    System.out.println("Try move " + dir);
+                    board.Move(dragStartX, dragStartY, dir);
                     dragging = false;
                 }
                 else {
