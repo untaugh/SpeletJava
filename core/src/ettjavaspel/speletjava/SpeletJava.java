@@ -121,4 +121,24 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		//viewport.update(width, height, true);
 	}
 
+	private Position getPiece(int x, int y) {
+
+		float boardWidth = board.cols*pieceSize;
+		float boardHeight = board.rows*pieceSize;
+
+		int col = 0;
+		int row = 0;
+
+
+		if (x < boardWidth && y < boardHeight) {
+			col = (int)( ((float)x/boardWidth)*board.cols);
+			row = (int)( ((float)y/boardHeight)*board.rows);
+		}
+		else {
+			return null;
+		}
+
+		return new Position(col, board.rows-row-1);
+	}
+
 }

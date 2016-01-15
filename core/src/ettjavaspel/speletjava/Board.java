@@ -44,7 +44,7 @@ public class Board {
         }
     }
 
-    public boolean Move (int row, int col, Direction dir) {
+    public boolean Move (int col, int row, Direction dir) {
 
         // check that selected piece exists
         if (row < 0 || row >= rows || col < 0 || col >=cols) {
