@@ -3,6 +3,12 @@ package ettjavaspel.speletjava;
 import java.util.Random;
 
 public class Board {
+    public enum Direction {
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+    }
 
     Piece[][] pieces;
 
@@ -31,6 +37,34 @@ public class Board {
                 }
             }
         }
+    }
+
+    public boolean Move (int row, int col, Direction dir) {
+
+        int toRow = row;
+        int toCol = col;
+
+        switch (dir) {
+            case UP:
+                toRow = row + 1;
+                break;
+            case DOWN:
+                toRow = row - 1;
+                break;
+            case LEFT:
+                toCol = col -1;
+                break;
+            case RIGHT:
+                toCol = col + 1;
+                break;
+            default:
+                break;
+        }
+
+        Piece tempPiece = pieces[col][row];
+        pieces[col][row] = pieces[toCol][toRow];
+        pieces[toCol][toRow] = tempPiece;
+        return true;
     }
 
 }
