@@ -57,18 +57,20 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			for (int row=0; row < board.pieces[col].length; row++) {
 				if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
 					batch.draw(textureIce, col*pieceSize, row*pieceSize, pieceSize, pieceSize);
+				} else {
+					batch.draw(textureGreen, col*pieceSize, row*pieceSize, pieceSize, pieceSize);
 				}
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.GREEN) {
-                    batch.draw(textureGreen, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+                    batch.draw(textureGreen, col * 150, row * 150);
                 }
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.BLUE) {
-						batch.draw(textureBlue, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+                    batch.draw(textureBlue, col*150, row*150);
                 }
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.PURPINK) {
-						batch.draw(texturePurpink, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+                    batch.draw(texturePurpink, col*150, row*150);
                 }
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.YELLOW) {
-						batch.draw(textureYellow, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+                    batch.draw(textureYellow, col*150, row*150);
                 }
 			}
 		}
