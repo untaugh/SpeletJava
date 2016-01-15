@@ -87,7 +87,14 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		System.out.println("Released: " + screenX + " " + screenY);
         dragging = false;
-		board.Move(5,5, Board.Direction.UP);
+
+		Position p = getPiece(screenX, screenY);
+		if (p != null) {
+			System.out.println("Up: " + board.MoveTest(p.col, p.row, Board.Direction.UP));
+			System.out.println("Down: " + board.MoveTest(p.col, p.row, Board.Direction.DOWN));
+			System.out.println("Left: " + board.MoveTest(p.col, p.row, Board.Direction.LEFT));
+			System.out.println("Right: " + board.MoveTest(p.col, p.row, Board.Direction.RIGHT));
+		}
 		return true;
 	}
 
@@ -126,8 +133,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		float boardWidth = board.cols*pieceSize;
 		float boardHeight = board.rows*pieceSize;
 
-		int col = 0;
-		int row = 0;
+		int col;
+		int row;
 
 
 		if (x < boardWidth && y < boardHeight) {

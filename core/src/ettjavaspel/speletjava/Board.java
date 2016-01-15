@@ -44,7 +44,60 @@ public class Board {
         }
     }
 
+    // return true if specified move is legal.
+    public boolean MoveTest (int col, int row, Direction dir) {
+
+        Piece.PieceColor pieceColor= pieces[col][row].piececolor;
+
+        int colD = 0;
+        int rowD = 0;
+
+        switch (dir) {
+            case UP:
+                rowD = 1;
+                break;
+            case DOWN:
+                rowD = -1;
+                break;
+            case LEFT:
+                colD = -1;
+                break;
+            case RIGHT:
+                colD = 1;
+                break;
+            default:
+                break;
+        }
+
+        // move to next piece
+        col = col + colD;
+        row = row + rowD;
+
+        // cannot move if piece next to is same color
+        if ( pieces[col][row].piececolor == pieceColor) {
+            return false;
+        }
+
+        while (col >= 0 && col < cols && row >= 0 && row < rows) {
+
+            // legal move exists
+            if ( pieces[col][row].piececolor == pieceColor) {
+                return true;
+            }
+
+            col = col + colD;
+            row = row + rowD;
+        }
+
+        // edge reached and no legal moves found
+        return false;
+    }
+
     public boolean Move (int col, int row, Direction dir) {
+        return true;
+    }
+
+    public boolean Step (int col, int row, Direction dir) {
 
         // check that selected piece exists
         if (row < 0 || row >= rows || col < 0 || col >=cols) {
