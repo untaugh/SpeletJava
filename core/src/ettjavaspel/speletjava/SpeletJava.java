@@ -16,6 +16,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
 	private OrthographicCamera camera;
 	Texture textureIce;
+	Texture textureIceSel;
 	Texture textureGreen;
 	Texture texturePurpink;
 	Texture textureYellow;
@@ -23,8 +24,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	Texture pixel;
 	Board board;
 	float pieceSize;
-    boolean dragging;
-    boolean marked;
+    boolean dragging = false;
+    boolean marking = false;
     int dragStartX;
     int dragStartY;
     Position position;
@@ -37,12 +38,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	public void create () {
 		batch = new SpriteBatch();
 		textureIce = new Texture("ice.png");
+		textureIceSel = new Texture("ice_sel.png");
 		textureGreen = new Texture("green.png");
 		textureYellow = new Texture("yellow.png");
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
-
-        marked = false;
 
 		board = new Board(9,12);
         position = new Position(9, 12);
@@ -63,25 +63,34 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-		
+
 		// Draw the board
 		for (int col=0; col < board.pieces.length; col++) {
 			for (int row=0; row < board.pieces[col].length; row++) {
+
+				if (board.pieces[col][row].selected) {
+					batch.setColor(1,1,1,1);
+				} else {
+					batch.setColor(0.7f,0.7f,0.7f,1);
+				}
+				Texture texture = pixel;
+
 				if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
-					batch.draw(textureIce, col*pieceSize, row*pieceSize, pieceSize, pieceSize);
+						texture = textureIce;
 				}
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.GREEN) {
-                    batch.draw(textureGreen, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+					texture = textureGreen;
                 }
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.BLUE) {
-						batch.draw(textureBlue, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+					texture = textureBlue;
                 }
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.PURPINK) {
-						batch.draw(texturePurpink, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+					texture = texturePurpink;
 				}
                 else if (board.pieces[col][row].piececolor == Piece.PieceColor.YELLOW) {
-						batch.draw(textureYellow, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
+					texture = textureYellow;
                 }
+				batch.draw(texture, col*pieceSize, row*pieceSize, pieceSize, pieceSize);
 			}
 		}
 
@@ -121,6 +130,12 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		camera.unproject(mouse);
 
 		System.out.println("Released: " + mouse.x + " " + mouse.y);
+
+		if (!marking) {
+			board.DeselectAll();
+		}
+
+		marking = false;
         dragging = false;
 
 		return true;
@@ -143,7 +158,23 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		System.out.println("drag: " + dragXD + " " + dragYD);
 
-		if (dragXD > pieceSize || dragYD > pieceSize) {
+		if (marking) {
+			Position startPosition = getPiece(dragStartX, dragStartY);
+			Position currentPosition = getPiece((int) mouse.x, (int) mouse.y);
+
+			if (startPosition == null || currentPosition == null) {
+				return false;
+			}
+				Piece startPiece = board.pieces[startPosition.col][startPosition.row];
+				Piece currentPiece = board.pieces[currentPosition.col][currentPosition.row];
+
+				if (startPiece.piececolor == currentPiece.piececolor) {
+					currentPiece.selected = true;
+				} else {
+					dragging = false;
+				}
+
+		} else if (dragXD > pieceSize || dragYD > pieceSize) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
 			Position endPosition = getPiece((int) mouse.x, (int) mouse.y);
 
@@ -159,10 +190,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 				board.Move(startPosition.col, startPosition.row, dir);
 				dragging = false;
 			} else {
-				//TODO: Selecting of group
-				// Temporary lines:
+				board.DeselectAll();
+				startPiece.selected = true;
+				endPiece.selected = true;
 				System.out.println("Start of selecting group");
-				dragging = false;
+				marking = true;
 			}
 
 		}

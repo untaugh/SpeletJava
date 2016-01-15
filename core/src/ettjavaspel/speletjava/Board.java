@@ -173,4 +173,13 @@ public class Board {
         return true;
     }
 
+    // deselected all pieces
+    public void DeselectAll() {
+        for (int col = 0; col < cols; col++) {
+            for (int row = 0; row < rows; row++) {
+                pieces[col][row].selected = false;
+            }
+        }
+    }
+
 }

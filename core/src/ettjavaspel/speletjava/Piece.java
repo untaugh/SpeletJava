@@ -10,7 +10,8 @@ public class Piece {
         YELLOW,
     }
 
-    PieceColor piececolor;
+    public PieceColor piececolor;
+    public boolean selected = false;
 
     public Piece (PieceColor pieceColor) {
         this.piececolor = pieceColor;
