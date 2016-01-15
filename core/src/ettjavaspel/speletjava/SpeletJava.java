@@ -28,7 +28,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
-		board = new Board();
+		board = new Board(9,9);
 		camera = new OrthographicCamera();
 
 		Gdx.input.setInputProcessor(this);
@@ -48,8 +48,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
-		float pieceWidth = width/10;
-		float pieceHeight = height/10;
+		float pieceWidth = width/board.pieces.length;
+		float pieceHeight = height/board.pieces[0].length;
 		float pieceSize = Math.min(pieceWidth, pieceHeight);
 
 		// Draw the board

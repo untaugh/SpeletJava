@@ -4,13 +4,16 @@ import java.util.Random;
 
 public class Board {
 
-    Piece[][] pieces = new Piece[10][10];
+    Piece[][] pieces;
 
-    public Board () {
+    public Board (int cols, int rows) {
+
+        pieces = new Piece[cols][rows];
+
         Random rand = new Random();
-        for (int i=0; i<10; i++) {
-            for (int j=0; j<10; j++) {
-                int a = rand.nextInt(4);
+        for (int i=0; i<cols; i++) {
+            for (int j=0; j<rows; j++) {
+                int a = rand.nextInt(Piece.PieceColor.values().length);
                 if(a == 0) {
                     pieces[i][j] = new Piece(Piece.PieceColor.BLUE);
                 }
