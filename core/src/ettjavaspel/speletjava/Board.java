@@ -45,7 +45,7 @@ public class Board {
     }
 
     // return true if specified move is legal.
-    public boolean MoveTest (int col, int row, Direction dir) {
+    private boolean MoveTest (int col, int row, Direction dir) {
 
         Piece.PieceColor pieceColor= pieces[col][row].piececolor;
 
@@ -98,6 +98,7 @@ public class Board {
         return false;
     }
 
+    // Move a piece to a specific direction
     public boolean Move (int col, int row, Direction dir) {
 
         if (!MoveTest(col, row, dir)) {

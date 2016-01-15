@@ -87,22 +87,16 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
 
-		Vector3 v3 = new Vector3(screenX, screenY, 0);
-		camera.unproject(v3);
+		Vector3 mouse = new Vector3(screenX, screenY, 0);
+		camera.unproject(mouse);
 
-		System.out.println("Released: " + v3.x + " " + v3.y);
+		System.out.println("Released: " + mouse.x + " " + mouse.y);
         dragging = false;
 
-		Position p = getPiece((int)v3.x, (int)v3.y);
+		Position p = getPiece((int)mouse.x, (int)mouse.y);
 		if (p != null) {
-			System.out.println("Up: " + board.MoveTest(p.col, p.row, Board.Direction.UP));
-			System.out.println("Down: " + board.MoveTest(p.col, p.row, Board.Direction.DOWN));
-			System.out.println("Left: " + board.MoveTest(p.col, p.row, Board.Direction.LEFT));
-			System.out.println("Right: " + board.MoveTest(p.col, p.row, Board.Direction.RIGHT));
 			board.Move(p.col, p.row, Board.Direction.UP);
-
 		}
-
 
 		return true;
 	}
