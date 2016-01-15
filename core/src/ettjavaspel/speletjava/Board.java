@@ -9,6 +9,7 @@ public class Board {
         DOWN,
         LEFT,
         RIGHT,
+        NONE,
     }
 
     Piece[][] pieces;
@@ -66,7 +67,7 @@ public class Board {
                 colD = 1;
                 break;
             default:
-                break;
+                return false;
         }
 
         // move to next piece
@@ -122,7 +123,7 @@ public class Board {
                 colD = 1;
                 break;
             default:
-                break;
+                return false;
         }
 
         while (pieces[col][row].piececolor != pieces[col+colD][row+rowD].piececolor) {
@@ -158,7 +159,7 @@ public class Board {
                 toCol = col + 1;
                 break;
             default:
-                break;
+                return false;
         }
 
         // check that target piece exists
