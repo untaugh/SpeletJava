@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 
 public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
@@ -85,22 +86,30 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
-		System.out.println("Released: " + screenX + " " + screenY);
+
+		Vector3 v3 = new Vector3(screenX, screenY, 0);
+		camera.unproject(v3);
+
+		System.out.println("Released: " + v3.x + " " + v3.y);
         dragging = false;
 
-		Position p = getPiece(screenX, screenY);
+		Position p = getPiece((int)v3.x, (int)v3.y);
 		if (p != null) {
 			System.out.println("Up: " + board.MoveTest(p.col, p.row, Board.Direction.UP));
 			System.out.println("Down: " + board.MoveTest(p.col, p.row, Board.Direction.DOWN));
 			System.out.println("Left: " + board.MoveTest(p.col, p.row, Board.Direction.LEFT));
 			System.out.println("Right: " + board.MoveTest(p.col, p.row, Board.Direction.RIGHT));
+			board.Move(p.col, p.row, Board.Direction.UP);
+
 		}
+
+
 		return true;
 	}
 
 	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
         if(!dragging) return false;
-        System.out.println("Dragging");
+        //System.out.println("Dragging");
 		return true;
 	}
 
@@ -145,7 +154,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			return null;
 		}
 
-		return new Position(col, board.rows-row-1);
+		return new Position(col, row);
 	}
 
 }

@@ -73,6 +73,11 @@ public class Board {
         col = col + colD;
         row = row + rowD;
 
+        // edge reached
+        if (row < 0 || row >= rows || col < 0 || col >=cols) {
+            return false;
+        }
+
         // cannot move if piece next to is same color
         if ( pieces[col][row].piececolor == pieceColor) {
             return false;
@@ -94,6 +99,37 @@ public class Board {
     }
 
     public boolean Move (int col, int row, Direction dir) {
+
+        if (!MoveTest(col, row, dir)) {
+            return false;
+        }
+
+        int colD = 0;
+        int rowD = 0;
+
+        switch (dir) {
+            case UP:
+                rowD = 1;
+                break;
+            case DOWN:
+                rowD = -1;
+                break;
+            case LEFT:
+                colD = -1;
+                break;
+            case RIGHT:
+                colD = 1;
+                break;
+            default:
+                break;
+        }
+
+        while (pieces[col][row].piececolor != pieces[col+colD][row+rowD].piececolor) {
+            Step(col,row,dir);
+            col = col + colD;
+            row = row + rowD;
+        }
+
         return true;
     }
 
