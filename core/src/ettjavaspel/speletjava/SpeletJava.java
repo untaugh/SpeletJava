@@ -20,6 +20,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	Texture textureBlue;
 	Board board;
 	float pieceSize;
+    boolean dragging;
+    boolean marked;
+    int dragStartX;
+    int dragStartY;
+    Position position;
 
 	@Override
 	public void create () {
@@ -30,7 +35,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
+        marked = false;
+
 		board = new Board(9,12);
+        position = new Position(9, 12);
+
 		camera = new OrthographicCamera();
 
 		Gdx.input.setInputProcessor(this);
@@ -67,8 +76,6 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		batch.end();
 	}
 
-    boolean dragging;
-
 	@Override public boolean mouseMoved (int screenX, int screenY) {
 		return false;
 	}
@@ -81,6 +88,9 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
         System.out.println("Pressed: " + screenX + " " + screenY);
         dragging = true;
+        position = this.getPiece(screenX, screenY);
+        dragStartX = position.col;
+        dragStartY = position.row;
 		return true;
 	}
 
@@ -104,6 +114,28 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
         if(!dragging) return false;
         //System.out.println("Dragging");
+
+        if(!marked) {
+            position = getPiece(screenX, screenY);
+            Board.Direction dir;
+            if(position.col != dragStartX || position.row != dragStartY) {
+                if(board.pieces[position.col][position.row].piececolor != board.pieces[dragStartX][dragStartY].piececolor) {
+                    dir = whichDirection(board, position, dragStartX, dragStartY);
+                    System.out.println("Try move " + dir);
+                    dragging = false;
+                }
+                else {
+
+                    //TODO: Selecting of group
+
+                    // Temporary lines:
+                    System.out.println("Start of selecting group");
+                    dragging = false;
+
+                }
+            }
+
+        }
 		return true;
 	}
 
@@ -150,5 +182,20 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		return new Position(col, row);
 	}
+
+    private Board.Direction whichDirection(Board board, Position position, int dsX, int dsY) {
+        if(position.col > dsX) {
+            return Board.Direction.RIGHT;
+        }
+        else if(position.col < dsX) {
+            return Board.Direction.LEFT;
+        }
+        else if(position.row > dsY) {
+            return Board.Direction.UP;
+        }
+        else {
+            return Board.Direction.DOWN;
+        }
+    }
 
 }
