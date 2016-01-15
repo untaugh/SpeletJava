@@ -29,7 +29,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
-		board = new Board(9,16);
+		board = new Board(9,12);
 		camera = new OrthographicCamera();
 
 		Gdx.input.setInputProcessor(this);
@@ -66,6 +66,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		batch.end();
 	}
 
+    boolean dragging;
+
 	@Override public boolean mouseMoved (int screenX, int screenY) {
 		return false;
 	}
@@ -76,18 +78,22 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
+        System.out.println("Pressed: " + screenX + " " + screenY);
+        dragging = true;
 		return true;
 	}
 
 	@Override public boolean touchUp (int screenX, int screenY, int pointer, int button) {
 		if (button != Input.Buttons.LEFT || pointer > 0) return false;
-		System.out.println("Click " + screenX + " " + screenY);
-
+		System.out.println("Released: " + screenX + " " + screenY);
+        dragging = false;
 		board.Move(5,5, Board.Direction.UP);
 		return true;
 	}
 
 	@Override public boolean touchDragged (int screenX, int screenY, int pointer) {
+        if(!dragging) return false;
+        System.out.println("Dragging");
 		return true;
 	}
 
