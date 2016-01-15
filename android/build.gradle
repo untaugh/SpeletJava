@@ -19,6 +19,11 @@ android {
         minSdkVersion 8
         targetSdkVersion 23
     }
+    buildTypes {
+        debug {
+            debuggable true
+        }
+    }
 }
 
 
