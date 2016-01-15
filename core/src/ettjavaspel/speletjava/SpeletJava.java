@@ -13,6 +13,9 @@ public class SpeletJava extends ApplicationAdapter {
 	Texture img;
 	Texture textureIce;
 	Texture textureGreen;
+	Texture texturePurpink;
+	Texture textureYellow;
+	Texture textureBlue;
 	Board board;
 
 	@Override
@@ -21,11 +24,11 @@ public class SpeletJava extends ApplicationAdapter {
 		img = new Texture("ice.png");
 		textureIce = new Texture("ice.png");
 		textureGreen = new Texture("green.png");
+		textureYellow = new Texture("yellow.png");
+		textureBlue = new Texture("blue.png");
+		texturePurpink = new Texture("purpink.png");
 
 		board = new Board();
-		board.pieces[5][3].piececolor = Piece.PieceColor.GREEN;
-		board.pieces[2][7].piececolor = Piece.PieceColor.GREEN;
-		board.pieces[4][4].piececolor = Piece.PieceColor.GREEN;
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 1500, 1500);
 	}
@@ -44,9 +47,19 @@ public class SpeletJava extends ApplicationAdapter {
 			for (int row=0; row < board.pieces[col].length; row++) {
 				if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
 					batch.draw(textureIce, col*150, row*150);
-				} else {
-					batch.draw(textureGreen, col*150, row*150);
 				}
+                else if (board.pieces[col][row].piececolor == Piece.PieceColor.GREEN) {
+                    batch.draw(textureGreen, col * 150, row * 150);
+                }
+                else if (board.pieces[col][row].piececolor == Piece.PieceColor.BLUE) {
+                    batch.draw(textureBlue, col*150, row*150);
+                }
+                else if (board.pieces[col][row].piececolor == Piece.PieceColor.PURPINK) {
+                    batch.draw(texturePurpink, col*150, row*150);
+                }
+                else if (board.pieces[col][row].piececolor == Piece.PieceColor.YELLOW) {
+                    batch.draw(textureYellow, col*150, row*150);
+                }
 			}
 		}
 
