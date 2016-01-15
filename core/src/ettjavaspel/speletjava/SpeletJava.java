@@ -18,6 +18,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	Texture textureYellow;
 	Texture textureBlue;
 	Board board;
+	float pieceSize;
 
 	@Override
 	public void create () {
@@ -28,7 +29,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
-		board = new Board(9,9);
+		board = new Board(9,16);
 		camera = new OrthographicCamera();
 
 		Gdx.input.setInputProcessor(this);
@@ -40,18 +41,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		batch.begin();
-
-		float width = Gdx.graphics.getWidth();
-		float height = Gdx.graphics.getHeight();
-
-		camera.setToOrtho(false, width, height);
-		camera.update();
-		batch.setProjectionMatrix(camera.combined);
-
-		float pieceWidth = width/board.pieces.length;
-		float pieceHeight = height/board.pieces[0].length;
-		float pieceSize = Math.min(pieceWidth, pieceHeight);
-
+		
 		// Draw the board
 		for (int col=0; col < board.pieces.length; col++) {
 			for (int row=0; row < board.pieces[col].length; row++) {
@@ -112,6 +102,13 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override public void resize (int width, int height) {
+		camera.setToOrtho(false, width, height);
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+
+		float pieceWidth = (float)width/board.pieces.length;
+		float pieceHeight = (float)height/board.pieces[0].length;
+		pieceSize = Math.min(pieceWidth, pieceHeight);
 		// viewport must be updated for it to work properly
 		//viewport.update(width, height, true);
 	}
