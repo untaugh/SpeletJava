@@ -11,9 +11,11 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.ScreenUtils;
 
 public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
+    Animation animation;
 	private OrthographicCamera camera;
 	Texture textureIce;
 	Texture textureIceSel;
@@ -22,6 +24,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	Texture textureYellow;
 	Texture textureBlue;
 	Texture pixel;
+    ScreenUtils fetchTexture;
 	Board board;
 	float pieceSize;
     boolean dragging = false;
@@ -46,6 +49,9 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		board = new Board(9,12);
         position = new Position(9, 12);
+
+        this.animation = new Animation();
+        this.fetchTexture = new ScreenUtils();
 
 		camera = new OrthographicCamera();
 
@@ -94,10 +100,12 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			}
 		}
 
+        animation.render(batch, board);
+/*
 		for (int i=0; i<pixelCounter; i++) {
 			batch.draw(pixel, pixelX[i], pixelY[i]);
 		}
-
+*/
 		batch.end();
 	}
 
@@ -110,13 +118,14 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
+        if(animation.active) return false;
         Vector3 mouse = new Vector3(screenX, screenY, 0);
         camera.unproject(mouse);
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		pixelCounter = 0;
-        System.out.println("Pressed: " + (int)mouse.x + " " + (int)mouse.y);
+        //System.out.println("Pressed: " + (int)mouse.x + " " + (int)mouse.y);
         dragging = true;
-        position = this.getPiece((int)mouse.x, (int)mouse.y);
+        //position = this.getPiece((int)mouse.x, (int)mouse.y);
 
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
@@ -129,7 +138,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		Vector3 mouse = new Vector3(screenX, screenY, 0);
 		camera.unproject(mouse);
 
-		System.out.println("Released: " + mouse.x + " " + mouse.y);
+		//System.out.println("Released: " + mouse.x + " " + mouse.y);
 
 		if (!marking) {
 			board.DeselectAll();
@@ -156,7 +165,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		int dragXD = Math.abs((int) mouse.x - dragStartX);
 		int dragYD = Math.abs((int) mouse.y - dragStartY);
 
-		System.out.println("drag: " + dragXD + " " + dragYD);
+		//System.out.println("drag: " + dragXD + " " + dragYD);
 
 		if (marking) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
@@ -186,9 +195,15 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			Piece endPiece = board.pieces[endPosition.col][endPosition.row];
 
 			if (startPiece.piececolor != endPiece.piececolor) {
-				Board.Direction dir = whichDirection(startPosition, endPosition);
-				board.Move(startPosition.col, startPosition.row, dir);
-				dragging = false;
+                this.animation = new Animation();
+                animation.pieceSize = pieceSize;
+
+                this.animation.Move(startPosition.col, startPosition.row, this.whichDirection(startPosition, endPosition), board);
+
+                if (this.animation.active) {
+                    animation.Step(board);
+                }
+                this.dragging = false;
 			} else {
 				board.DeselectAll();
 				startPiece.selected = true;
@@ -221,7 +236,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		float pieceWidth = (float)width/board.pieces.length;
 		float pieceHeight = (float)height/board.pieces[0].length;
-		pieceSize = Math.min(pieceWidth, pieceHeight);
+		animation.pieceSize = pieceSize = Math.min(pieceWidth, pieceHeight);
 		// viewport must be updated for it to work properly
 		//viewport.update(width, height, true);
 	}
