@@ -17,4 +17,9 @@ public class Piece {
         this.piececolor = pieceColor;
     }
 
+    // Test if piece has same color
+    public boolean SameColor(Piece piece) {
+        return piece != null && piece.piececolor == piececolor;
+    }
+
 }

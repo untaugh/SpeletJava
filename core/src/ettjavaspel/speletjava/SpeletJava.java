@@ -120,6 +120,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
+
+		Piece ps[] = board.group(board.pieces[position.col][position.row]);
+
+		board.select(ps);
+
 		return true;
 	}
 
