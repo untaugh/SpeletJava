@@ -125,12 +125,14 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		pixelCounter = 0;
         //System.out.println("Pressed: " + (int)mouse.x + " " + (int)mouse.y);
         dragging = true;
-        //position = this.getPiece((int)mouse.x, (int)mouse.y);
+        Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
 
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
 
-		Piece ps[] = board.group(board.pieces[position.col][position.row]);
+		System.out.println("Pos: " + pos.col + " " + pos.row);
+
+		Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
 
 		board.select(ps);
 

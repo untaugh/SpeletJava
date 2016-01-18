@@ -134,11 +134,6 @@ public class Board {
         return pieceArray;
     }
 
-    public Piece[] addGroup(Piece piece) {
-        Piece pieceArray[] = {piece};
-        return pieceArray;
-    }
-
     public Piece[] addGroup(Piece pieceArray[]) {
 
         Piece group[] = new Piece[pieceArray.length + pieceArray.length*4];
