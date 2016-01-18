@@ -37,8 +37,8 @@ public class Animation
     Texture textureHorisontal;
     Texture textureVertical;
 
-    Sound testSound = Gdx.audio.newSound(Gdx.files.internal("MA.mp3"));
-    Sound testSound2 = Gdx.audio.newSound(Gdx.files.internal("RS.mp3"));
+    Sound animationSound1;
+    Sound animationSound2;
 
     public Animation() {
         this.active = false;
@@ -46,12 +46,14 @@ public class Animation
         this.currentPositionX = 0;
         this.textureVertical = new Texture("vertical.png");
         this.textureHorisontal = new Texture("horisontal.png");
+        animationSound1 = Gdx.audio.newSound(Gdx.files.internal("MA.mp3"));
+        animationSound2 = Gdx.audio.newSound(Gdx.files.internal("RS.mp3"));
     }
 
     public enum options
     {
         HORISONTAL,
-        VERTICAL;
+        VERTICAL
     }
 
 
@@ -103,7 +105,7 @@ public class Animation
             }
         }
         this.active = true;
-        this.stepSize = this.pieceSize / 5.0f;
+        this.stepSize = this.pieceSize / 4f;
         this.direction = direction;
         this.currentPositionX = currentPositionX;
         this.currentPositionY = currentPositionY;
@@ -156,7 +158,7 @@ public class Animation
         final int n = this.currentPositionX;
         final int n2 = this.currentPositionY;
 
-        testSound.play(0.5f);
+        animationSound1.play(0.5f);
 
         if (n2 >= 0 && n2 < board.rows && n >= 0 && n < board.cols) {
             int n3 = 0;
@@ -209,7 +211,7 @@ public class Animation
                 this.currentPositionY += this.positionStepSizeY;
                 if (n == this.endPositionX && n2 == this.endPositionY) {
                     this.active = false;
-                    testSound2.play(0.2f);
+                    animationSound2.play(0.2f);
                 }
                 return true;
             }

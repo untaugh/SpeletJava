@@ -75,9 +75,9 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			for (int row=0; row < board.pieces[col].length; row++) {
 
 				if (board.pieces[col][row].selected) {
-					batch.setColor(1,1,1,1);
+					batch.setColor(0.7f, 0.7f, 0.7f, 1);
 				} else {
-					batch.setColor(0.7f,0.7f,0.7f,1);
+					batch.setColor(1, 1, 1, 1);
 				}
 				Texture texture = pixel;
 
@@ -183,7 +183,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 					dragging = false;
 				}
 
-		} else if (dragXD > pieceSize || dragYD > pieceSize) {
+		} else if (dragXD > (pieceSize * 0.75) || dragYD > (pieceSize * 0.75)) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
 			Position endPosition = getPiece((int) mouse.x, (int) mouse.y);
 
@@ -195,6 +195,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			Piece endPiece = board.pieces[endPosition.col][endPosition.row];
 
 			if (startPiece.piececolor != endPiece.piececolor) {
+				animation.animationSound1.dispose();
+				animation.animationSound2.dispose();
                 this.animation = new Animation();
                 animation.pieceSize = pieceSize;
 
