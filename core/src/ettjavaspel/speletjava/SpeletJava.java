@@ -18,7 +18,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
     Animation animation;
 	private OrthographicCamera camera;
 	Texture textureIce;
-	Texture textureIceSel;
+	Texture textureIceSel2;
 	Texture textureGreen;
 	Texture texturePurpink;
 	Texture textureYellow;
