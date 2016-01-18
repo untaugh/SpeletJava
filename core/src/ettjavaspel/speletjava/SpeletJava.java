@@ -132,9 +132,9 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		System.out.println("Pos: " + pos.col + " " + pos.row);
 
-		Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
+		//Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
 
-		board.select(ps);
+		//board.select(ps);
 
 		return true;
 	}
@@ -147,9 +147,23 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		//System.out.println("Released: " + mouse.x + " " + mouse.y);
 
+		Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
+		Piece piece = board.GetPiece(pos.col, pos.row);
+
 		if (!marking) {
-			board.DeselectAll();
+
+			if (piece.selected) {
+				System.out.println("selected");
+				piece.selected = false;
+			} else
+			if (dragging && board.NextPiece(piece).length != 0 ) {
+				board.DeselectAll();
+				Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
+				board.select(ps);
+			}
+
 		}
+
 
 		marking = false;
         dragging = false;
@@ -184,10 +198,12 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 				Piece startPiece = board.pieces[startPosition.col][startPosition.row];
 				Piece currentPiece = board.pieces[currentPosition.col][currentPosition.row];
 
-				if (startPiece.piececolor == currentPiece.piececolor) {
+				Piece group[] = board.group(startPiece);
+
+				if ( board.contains(group, currentPiece)) {
 					currentPiece.selected = true;
 				} else {
-					dragging = false;
+					//dragging = false;
 				}
 
 		} else if (dragXD > (pieceSize * 0.75) || dragYD > (pieceSize * 0.75)) {

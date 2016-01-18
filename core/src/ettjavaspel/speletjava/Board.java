@@ -128,7 +128,6 @@ public class Board {
         while ( pieceArray.length > length) {
             length = pieceArray.length;
             pieceArray = addGroup(pieceArray);
-            System.out.println("Lengths" + length + " " + pieceArray.length);
         }
 
         return pieceArray;
@@ -151,7 +150,6 @@ public class Board {
                 //System.out.println("next " + next.length);
                 if (!contains(group, np)) {
                     group[groupCount++] = np;
-                    System.out.println("adding");
                 }
             }
 
