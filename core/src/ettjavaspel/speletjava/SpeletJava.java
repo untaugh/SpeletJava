@@ -17,6 +17,8 @@ import com.badlogic.gdx.utils.ScreenUtils;
 public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	SpriteBatch batch;
     Animation animation;
+    Animation polyphony;
+    Animation polyphony2;
 	private OrthographicCamera camera;
 	Texture textureIce;
 	Texture textureIceSel;
@@ -53,6 +55,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
         position = new Position(9, 12);
 
         this.animation = new Animation();
+        this.polyphony = new Animation();
+        this.polyphony2 = new Animation();
         this.fetchTexture = new ScreenUtils();
 
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("laBamba.mp3"));
@@ -108,11 +112,18 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		}
 
         animation.render(batch, board);
-/*
+
+        polyphony.render(batch, board);
+
+        polyphony2.render(batch, board);
+
+
+        /*
 		for (int i=0; i<pixelCounter; i++) {
 			batch.draw(pixel, pixelX[i], pixelY[i]);
 		}
-*/
+        */
+
 		batch.end();
 	}
 
@@ -125,7 +136,10 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	}
 
 	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
-        if(animation.active) return false;
+
+        //if(animation.active) return false;
+        if(polyphony2.active) return false;
+
         Vector3 mouse = new Vector3(screenX, screenY, 0);
         camera.unproject(mouse);
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
@@ -225,17 +239,45 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			Piece endPiece = board.pieces[endPosition.col][endPosition.row];
 
 			if (startPiece.piececolor != endPiece.piececolor) {
-				animation.animationSound1.dispose();
-				animation.animationSound2.dispose();
-                this.animation = new Animation();
-                animation.pieceSize = pieceSize;
+				if(!animation.active) {
+                    animation.animationSound1.dispose();
+                    animation.animationSound2.dispose();
+                    this.animation = new Animation();
+                    animation.pieceSize = pieceSize;
 
-                this.animation.Move(startPosition.col, startPosition.row, this.whichDirection(startPosition, endPosition), board);
+                    this.animation.Move(startPosition.col, startPosition.row, this.whichDirection(startPosition, endPosition), board);
 
-                if (this.animation.active) {
-                    animation.Step(board);
+                    if (this.animation.active) {
+                        animation.Step(board);
+                    }
+                    this.dragging = false;
                 }
-                this.dragging = false;
+                else if(!polyphony.active) {
+                    polyphony.animationSound1.dispose();
+                    polyphony.animationSound2.dispose();
+                    this.polyphony = new Animation();
+                    polyphony.pieceSize = pieceSize;
+
+                    this.polyphony.Move(startPosition.col, startPosition.row, this.whichDirection(startPosition, endPosition), board);
+
+                    if (this.polyphony.active) {
+                        polyphony.Step(board);
+                    }
+                    this.dragging = false;
+                }
+                else if(!polyphony2.active) {
+                    polyphony2.animationSound1.dispose();
+                    polyphony2.animationSound2.dispose();
+                    this.polyphony2 = new Animation();
+                    polyphony2.pieceSize = pieceSize;
+
+                    this.polyphony2.Move(startPosition.col, startPosition.row, this.whichDirection(startPosition, endPosition), board);
+
+                    if (this.polyphony2.active) {
+                        polyphony2.Step(board);
+                    }
+                    this.dragging = false;
+                }
 			} else {
 				board.DeselectAll();
 				startPiece.selected = true;
