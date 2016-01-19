@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.GL20;
@@ -32,6 +33,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
     int dragStartX;
     int dragStartY;
     Position position;
+	Music backgroundMusic;
 
 	int pixelX[] = new int[1000];
 	int pixelY[] = new int[1000];
@@ -52,6 +54,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
         this.animation = new Animation();
         this.fetchTexture = new ScreenUtils();
+
+		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("laBamba.mp3"));
+		backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(1);
+		backgroundMusic.play();
 
 		camera = new OrthographicCamera();
 
@@ -130,7 +137,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
 
-		System.out.println("Pos: " + pos.col + " " + pos.row);
+		//System.out.println("Pos: " + pos.col + " " + pos.row);
 
 		//Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
 
