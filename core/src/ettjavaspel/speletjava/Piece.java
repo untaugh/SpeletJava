@@ -12,12 +12,12 @@ public class Piece {
 
     public PieceColor piececolor;
     public boolean selected = false;
+    public boolean moving = false;
 
     public Piece (PieceColor pieceColor) {
         this.piececolor = pieceColor;
     }
 
-    // Test if piece has same color
     public boolean SameColor(Piece piece) {
         return piece != null && piece.piececolor == piececolor;
     }

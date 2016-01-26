@@ -51,18 +51,20 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
-		board = new Board(9,12);
-        position = new Position(9, 12);
+		board = new Board(7,11);
+        position = new Position(7, 11);
 
         this.animation = new Animation();
         this.polyphony = new Animation();
         this.polyphony2 = new Animation();
         this.fetchTexture = new ScreenUtils();
 
+        /*
 		backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("laBamba.mp3"));
 		backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(1);
 		backgroundMusic.play();
+		*/
 
 		camera = new OrthographicCamera();
 
@@ -84,39 +86,33 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		// Draw the board
 		for (int col=0; col < board.pieces.length; col++) {
 			for (int row=0; row < board.pieces[col].length; row++) {
+				if(!board.pieces[col][row].moving) {
+					if (board.pieces[col][row].selected) {
+						batch.setColor(0.7f, 0.7f, 0.7f, 1);
+					} else {
+						batch.setColor(1, 1, 1, 1);
+					}
+					Texture texture = pixel;
 
-				if (board.pieces[col][row].selected) {
-					batch.setColor(0.7f, 0.7f, 0.7f, 1);
-				} else {
-					batch.setColor(1, 1, 1, 1);
-				}
-				Texture texture = pixel;
-
-				if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
+					if (board.pieces[col][row].piececolor == Piece.PieceColor.ICE) {
 						texture = textureIce;
+					} else if (board.pieces[col][row].piececolor == Piece.PieceColor.GREEN) {
+						texture = textureGreen;
+					} else if (board.pieces[col][row].piececolor == Piece.PieceColor.BLUE) {
+						texture = textureBlue;
+					} else if (board.pieces[col][row].piececolor == Piece.PieceColor.PURPINK) {
+						texture = texturePurpink;
+					} else if (board.pieces[col][row].piececolor == Piece.PieceColor.YELLOW) {
+						texture = textureYellow;
+					}
+					batch.draw(texture, col * pieceSize, row * pieceSize, pieceSize, pieceSize);
 				}
-                else if (board.pieces[col][row].piececolor == Piece.PieceColor.GREEN) {
-					texture = textureGreen;
-                }
-                else if (board.pieces[col][row].piececolor == Piece.PieceColor.BLUE) {
-					texture = textureBlue;
-                }
-                else if (board.pieces[col][row].piececolor == Piece.PieceColor.PURPINK) {
-					texture = texturePurpink;
-				}
-                else if (board.pieces[col][row].piececolor == Piece.PieceColor.YELLOW) {
-					texture = textureYellow;
-                }
-				batch.draw(texture, col*pieceSize, row*pieceSize, pieceSize, pieceSize);
 			}
 		}
 
         animation.render(batch, board);
-
         polyphony.render(batch, board);
-
         polyphony2.render(batch, board);
-
 
         /*
 		for (int i=0; i<pixelCounter; i++) {
@@ -124,7 +120,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		}
         */
 
-		batch.end();
+        batch.end();
+
 	}
 
 	@Override public boolean mouseMoved (int screenX, int screenY) {
@@ -137,25 +134,17 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 	@Override public boolean touchDown (int screenX, int screenY, int pointer, int button) {
 
-        //if(animation.active) return false;
-        if(polyphony2.active) return false;
+        if(animation.active && polyphony.active && polyphony2.active) return false;
 
         Vector3 mouse = new Vector3(screenX, screenY, 0);
         camera.unproject(mouse);
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		pixelCounter = 0;
-        //System.out.println("Pressed: " + (int)mouse.x + " " + (int)mouse.y);
         dragging = true;
         Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
 
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
-
-		//System.out.println("Pos: " + pos.col + " " + pos.row);
-
-		//Piece ps[] = board.group(board.pieces[pos.col][pos.row]);
-
-		//board.select(ps);
 
 		return true;
 	}
@@ -165,8 +154,6 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		Vector3 mouse = new Vector3(screenX, screenY, 0);
 		camera.unproject(mouse);
-
-		//System.out.println("Released: " + mouse.x + " " + mouse.y);
 
 		Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
 		Piece piece = board.GetPiece(pos.col, pos.row);
@@ -206,8 +193,6 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		int dragXD = Math.abs((int) mouse.x - dragStartX);
 		int dragYD = Math.abs((int) mouse.y - dragStartY);
-
-		//System.out.println("drag: " + dragXD + " " + dragYD);
 
 		if (marking) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
@@ -311,7 +296,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		float pieceWidth = (float)width/board.pieces.length;
 		float pieceHeight = (float)height/board.pieces[0].length;
 		animation.pieceSize = pieceSize = Math.min(pieceWidth, pieceHeight);
-		// viewport must be updated for it to work properly
+		//viewport should be updated for it to work properly:
 		//viewport.update(width, height, true);
 	}
 

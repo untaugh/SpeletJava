@@ -46,7 +46,6 @@ public class Board {
         }
     }
 
-    // deselected all pieces
     public void DeselectAll() {
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
@@ -61,9 +60,7 @@ public class Board {
         }
     }
 
-    // Get piece at this coordinate
     public Piece GetPiece(int col, int row) {
-        // check that selected piece exists
         if (row < 0 || row >= rows || col < 0 || col >=cols) {
             return null;
         }
@@ -71,7 +68,6 @@ public class Board {
         return pieces[col][row];
     }
 
-    // Get pieces next to a piece
     public Piece[] NextPiece(Piece piece) {
 
         Position pos = position(piece);
@@ -98,7 +94,6 @@ public class Board {
         return Arrays.copyOf(nextPiece, nextCount);
     }
 
-    // Piece position
     public Position position(Piece piece) {
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
@@ -147,7 +142,6 @@ public class Board {
             Piece next[] = NextPiece(p);
 
             for (Piece np : next) {
-                //System.out.println("next " + next.length);
                 if (!contains(group, np)) {
                     group[groupCount++] = np;
                 }

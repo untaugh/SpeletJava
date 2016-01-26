@@ -1,9 +1,5 @@
 package ettjavaspel.speletjava;
 
-/**
- * Created by Oskar Rundgren on 1/15/16.
- */
-
 public class Position {
     int col;
     int row;
