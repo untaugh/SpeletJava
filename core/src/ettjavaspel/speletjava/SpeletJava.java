@@ -210,11 +210,14 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		//	pixelCounter++;
 		//}
 
+		// we are done draggning
 		if(!dragging) return false;
 
+		// distance from start of drag
 		int dragXD = Math.abs((int) mouse.x - dragStartX);
 		int dragYD = Math.abs((int) mouse.y - dragStartY);
 
+		// marking pieces mode
 		if (marking) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
 			Position currentPosition = getPiece((int) mouse.x, (int) mouse.y);
@@ -232,7 +235,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 				} else {
 					//dragging = false;
 				}
-
+		// check if piece should be launched
 		} else if (dragXD > (pieceSize * 0.75) || dragYD > (pieceSize * 0.75)) {
 			Position startPosition = getPiece(dragStartX, dragStartY);
 			Position endPosition = getPiece((int) mouse.x, (int) mouse.y);
@@ -245,6 +248,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 			Piece endPiece = board.pieces[endPosition.col][endPosition.row];
 
 			if (startPiece.piececolor != endPiece.piececolor) {
+				// try starting one of the animations for the move
 				if(!animation.active) {
                     animation.animationSound1.dispose();
                     animation.animationSound2.dispose();
