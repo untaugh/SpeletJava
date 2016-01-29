@@ -23,6 +23,7 @@ public class Board {
 
         pieces = new Piece[cols][rows];
 
+        // create random board
         Random rand = new Random();
         for (int i=0; i<cols; i++) {
             for (int j=0; j<rows; j++) {
@@ -60,6 +61,7 @@ public class Board {
         }
     }
 
+    // get piece object for coordinate
     public Piece GetPiece(int col, int row) {
         if (row < 0 || row >= rows || col < 0 || col >=cols) {
             return null;
@@ -68,6 +70,7 @@ public class Board {
         return pieces[col][row];
     }
 
+    // get pieces of same color surrounding a piece
     public Piece[] NextPiece(Piece piece) {
 
         Position pos = position(piece);
@@ -94,6 +97,7 @@ public class Board {
         return Arrays.copyOf(nextPiece, nextCount);
     }
 
+    // position on the board for a piece
     public Position position(Piece piece) {
         for (int col = 0; col < cols; col++) {
             for (int row = 0; row < rows; row++) {
@@ -105,6 +109,7 @@ public class Board {
         return new Position(-1, -1);
     }
 
+    // check if array contains a piece
     public boolean contains(Piece pieceArray[], Piece piece) {
 
         for (Piece p: pieceArray) {
@@ -115,6 +120,7 @@ public class Board {
         return false;
     }
 
+    // get a group of pieces to which this piece belongs
     public Piece[] group(Piece piece) {
 
         Piece pieceArray[] = {piece};
@@ -128,6 +134,7 @@ public class Board {
         return pieceArray;
     }
 
+    // add more surrounding pieces of same color to a group
     public Piece[] addGroup(Piece pieceArray[]) {
 
         Piece group[] = new Piece[pieceArray.length + pieceArray.length*4];

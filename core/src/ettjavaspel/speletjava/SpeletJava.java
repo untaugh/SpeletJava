@@ -37,9 +37,9 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
     Position position;
 	Music backgroundMusic;
 
-	int pixelX[] = new int[1000];
-	int pixelY[] = new int[1000];
-	int pixelCounter;
+	//int pixelX[] = new int[1000];
+	//int pixelY[] = new int[1000];
+	//int pixelCounter;
 
 	@Override
 	public void create () {
@@ -70,6 +70,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 
 		Gdx.input.setInputProcessor(this);
 
+		// crete a white texture
 		Pixmap pixmap = new Pixmap(3, 3, Pixmap.Format.RGBA8888);
 		pixmap.setColor(Color.WHITE);
 		pixmap.fillRectangle(0, 0, 3, 3);
@@ -139,7 +140,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
         Vector3 mouse = new Vector3(screenX, screenY, 0);
         camera.unproject(mouse);
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
-		pixelCounter = 0;
+		//pixelCounter = 0;
         dragging = true;
         Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
 
@@ -183,11 +184,11 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
         Vector3 mouse = new Vector3(screenX, screenY, 0);
         camera.unproject(mouse);
 
-		if (pixelCounter < 1000) {
-			pixelX[pixelCounter] = (int) mouse.x;
-			pixelY[pixelCounter] = (int) mouse.y;
-			pixelCounter++;
-		}
+		//if (pixelCounter < 1000) {
+		//	pixelX[pixelCounter] = (int) mouse.x;
+		//	pixelY[pixelCounter] = (int) mouse.y;
+		//	pixelCounter++;
+		//}
 
 		if(!dragging) return false;
 
@@ -264,6 +265,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
                     this.dragging = false;
                 }
 			} else {
+				// start selecting group
 				board.DeselectAll();
 				startPiece.selected = true;
 				endPiece.selected = true;
@@ -288,6 +290,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		return false;
 	}
 
+	// screen resize
 	@Override public void resize (int width, int height) {
 		camera.setToOrtho(false, width, height);
 		camera.update();
@@ -300,6 +303,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		//viewport.update(width, height, true);
 	}
 
+	// convert screen coordinate to piece position
 	private Position getPiece(int x, int y) {
 
 		float boardWidth = board.cols*pieceSize;
@@ -320,6 +324,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		return new Position(col, row);
 	}
 
+	// get direction of draggning movement
     private Board.Direction whichDirection(Position startPosition, Position endPosition) {
         if(startPosition.col < endPosition.col && startPosition.row == endPosition.row) {
             return Board.Direction.RIGHT;
