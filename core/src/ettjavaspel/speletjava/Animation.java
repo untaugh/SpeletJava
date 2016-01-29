@@ -45,7 +45,7 @@ public class Animation
         VERTICAL
     }
 
-
+    // start animated move
     public boolean Move(final int currentPositionX, final int currentPositionY, final Board.Direction direction, Board board) {
         if (!this.MoveTest(currentPositionX, currentPositionY, direction, board)) {
             return false;
@@ -89,6 +89,7 @@ public class Animation
         return true;
     }
 
+    // Test if moving done
     private boolean MoveTest(int n, int n2, final Board.Direction direction, Board board) {
 
         final Piece.PieceColor piececolor = board.pieces[n][n2].piececolor;
@@ -129,6 +130,7 @@ public class Animation
         return false;
     }
 
+    // Animation move one piece length
     public boolean Step(Board board) {
 
         final int n = this.currentPositionX;
@@ -236,6 +238,7 @@ public class Animation
         return false;
     }
 
+    // draw animation
     public void render(SpriteBatch batch, Board board) {
 
         if (this.active) {

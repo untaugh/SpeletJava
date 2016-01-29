@@ -15,11 +15,13 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class SpeletJava extends ApplicationAdapter implements InputProcessor {
-	SpriteBatch batch;
+
+	// animation
     Animation animation;
     Animation polyphony;
     Animation polyphony2;
-	private OrthographicCamera camera;
+
+	// textures
 	Texture textureIce;
 	Texture textureIceSel;
 	Texture textureGreen;
@@ -28,15 +30,28 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	Texture textureBlue;
 	Texture pixel;
     ScreenUtils fetchTexture;
+
+	// opengl camera
+	private OrthographicCamera camera;
+	SpriteBatch batch;
+
+	// board object
 	Board board;
+
+	// size of one game piece
 	float pieceSize;
-    boolean dragging = false;
-    boolean marking = false;
+
+	// where dragging motion started on screen
     int dragStartX;
     int dragStartY;
-    Position position;
+
+	// keep track of user input state
+	boolean dragging = false;
+	boolean marking = false;
+
 	Music backgroundMusic;
 
+	// for drawing test trace
 	//int pixelX[] = new int[1000];
 	//int pixelY[] = new int[1000];
 	//int pixelCounter;
@@ -44,6 +59,8 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+
+		// read textures from files
 		textureIce = new Texture("ice.png");
 		textureIceSel = new Texture("ice_sel.png");
 		textureGreen = new Texture("green.png");
@@ -51,9 +68,10 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		textureBlue = new Texture("blue.png");
 		texturePurpink = new Texture("purpink.png");
 
+		// create new board
 		board = new Board(7,11);
-        position = new Position(7, 11);
 
+		// animation objects
         this.animation = new Animation();
         this.polyphony = new Animation();
         this.polyphony2 = new Animation();
@@ -66,8 +84,10 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
 		backgroundMusic.play();
 		*/
 
+		// opengl camera
 		camera = new OrthographicCamera();
 
+		// enable user input
 		Gdx.input.setInputProcessor(this);
 
 		// crete a white texture
@@ -142,7 +162,7 @@ public class SpeletJava extends ApplicationAdapter implements InputProcessor {
         if (button != Input.Buttons.LEFT || pointer > 0) return false;
 		//pixelCounter = 0;
         dragging = true;
-        Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
+        //Position pos = this.getPiece((int)mouse.x, (int)mouse.y);
 
         dragStartX = (int)mouse.x;
         dragStartY = (int)mouse.y;
